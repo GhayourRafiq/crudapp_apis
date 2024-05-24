@@ -1,11 +1,13 @@
-    // routes/productRoutes.js
+
+// routes/productRoutes.js
 const express = require('express');
-const productController = require('../controllers/productController');
-
 const router = express.Router();
+const productController = require('../controllers/productController');
+const { productValidationRules } = require('../validators/productValidator');
 
-router.post('/products', productController.createProduct);
+router.post('/product', productValidationRules(), productController.createProduct);
 router.get('/products', productController.getProducts);
-router.delete('/products/:id', productController.deleteProduct);
+router.delete('/product/:id', productController.deleteProduct);
 
 module.exports = router;
+
