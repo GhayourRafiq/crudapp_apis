@@ -10,9 +10,16 @@ exports.createProduct = async (req, res) => {
 
     try {
         const { title, description, price, image_url } = req.body;
+
+        // Check if a product with the same title already exists
+        const existingProduct = await Product.findOne({ title });
+        if (existingProduct) {
+            return res.status(400).json({ success: false, message: 'Product with the same title already exists' });
+        }
+
         const product = new Product({ title, description, price, image_url });
         const result = await product.save();
-        return res.status(201).json({ success: true, message:"product added succesfully",data: result });
+        return res.status(201).json({ success: true, message: "Product added successfully", data: result });
     } catch (err) {
         return res.status(500).json({ success: false, error: err.message, message: "Error saving product" });
     }
@@ -37,6 +44,6 @@ exports.deleteProduct = async (req, res) => {
             return res.status(404).json({ success: false, error: 'Product not found' });
         }
     } catch (err) {
-        return res.status(500).json({ success: false, message:"internal server error", error: err.message });
+        return res.status(500).json({ success: false, message: "Internal server error", error: err.message });
     }
 };
