@@ -38,8 +38,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-
-// Controller for user login
 // Controller for user login
 exports.login = async (req, res) => {
   try {
