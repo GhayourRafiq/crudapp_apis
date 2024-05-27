@@ -66,7 +66,10 @@ exports.login = async (req, res) => {
     const payload = { user: { id: user.id } };
 
     // Sign and return the JWT
-    const token = jwt.sign(payload, 'your_jwt_secret', { expiresIn: 3600 });
+    // Sign and return the JWT with only userId
+    const token = jwt.sign({ id: user._id }, 'your_jwt_secret', {
+      expiresIn: '30d'
+    });
     res.json({ token, id: user.id , usertype:user.userType});
   } catch (err) {
     console.error(err.message);
