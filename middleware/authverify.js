@@ -17,16 +17,9 @@ const authMiddleware = async (req, res, next) => {
   // Verify token
   try {
     const decoded = jwt.verify(token, 'secret');
-    req.user = decoded.id;
-
-    // Fetch user from database
-    const user = await User.findById(req.user);
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-
-    // Proceed to the next middleware or route handler
-    next();
+      let user = await User.findById(decoded.id).select("-password");
+      req.user = user;
+      next();
   } catch (err) {
     console.error(err.message);
     res.status(401).json({ msg: 'Token is not valid' });
