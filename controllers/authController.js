@@ -48,7 +48,7 @@ exports.login = async (req, res) => {
     }
 
     // Extract login data from request body
-    const { email, password } = req.body;
+    const { email, password ,userType } = req.body;
 
     // Find the user by email
     const user = await User.findOne({ email });
@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
 
     // Sign and return the JWT
     const token = jwt.sign(payload, 'your_jwt_secret', { expiresIn: 3600 });
-    res.json({ token, id: user.id });
+    res.json({ token, id: user.id , usertype:user.userType});
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
