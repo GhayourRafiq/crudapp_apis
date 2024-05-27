@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
 
     // Sign and return the JWT
     // Sign and return the JWT with only userId
-    const token = jwt.sign({ id: user._id }, 'your_jwt_secret', {
+    const token = jwt.sign({ id: user._id }, 'secret', {
       expiresIn: '30d'
     });
     res.json({ token, id: user.id , usertype:user.userType});

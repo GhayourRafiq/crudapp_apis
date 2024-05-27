@@ -8,7 +8,7 @@ const { validationResult } = require('express-validator');
 // Controller for requesting a password reset
 exports.requestPasswordReset = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email  } = req.body;
 
     // Find the user by email
     const user = await User.findOne({ email });
@@ -26,7 +26,7 @@ exports.requestPasswordReset = async (req, res) => {
 
     await sendEmail(user.email, 'Password Reset Request', message);
 
-    res.json({ success: true, msg: 'Password reset email sent' });
+    res.json({ success: true, msg: 'Password reset email sent' , resetPasswordToken});
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
