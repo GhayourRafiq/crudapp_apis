@@ -14,7 +14,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'admin'],  // Restrict userType to 'user' or 'admin'
     default: 'user'  // Default userType is 'user'
-  }
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 // Export the User model
