@@ -1,4 +1,5 @@
 // app.js
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -11,6 +12,7 @@ const app = express();
 
 // Use express.json() to parse JSON bodies into JS objects
 app.use(express.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
