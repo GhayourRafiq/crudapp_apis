@@ -14,6 +14,6 @@ router.post('/login', loginValidator, authController.login);
 router.get('/users',authmiddleware ,authController.getCurrentUser);
 
 // Route to delete an admin by ID
-router.delete('/admin/:id', authController.deleteAdmin);
+router.delete('/admin/:id',authmiddleware , authController.deleteAdmin);
 
 module.exports = router;
