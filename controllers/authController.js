@@ -65,30 +65,30 @@ exports.login = async (req, res) => {
     // Create a JWT payload with only userId
     const payload = { user: { id: user.id } };
 
-    // Sign and return the JWT
     // Sign and return the JWT with only userId
     const token = jwt.sign({ id: user._id }, 'secret', {
       expiresIn: '30d'
     });
-    res.json({  data:user,token});
+    res.json({sucess:true , message: "Login sucessfully" , data:user, token});
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
-
-// Controller to get all users
-exports.getAllUsers = async (req, res) => {
+// Controller to get current logged-in user data
+exports.getCurrentUser = async (req, res) => {
   try {
-    // Retrieve all users from the database
-    const users = await User.find();
-    res.json({ success: true, message: "All user data", users });
+    // Fetch user data using the user ID from the JWT
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found' });
+    }
+    res.json({ success: true, message: "User data", user });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
-
 // Controller to delete an admin
 exports.deleteAdmin = async (req, res) => {
   try {
