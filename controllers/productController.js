@@ -47,16 +47,23 @@ exports.deleteProduct = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal server error", error: err.message });
     }
 };
+
 exports.updateProduct = async (req, res) => {
-    const { id } = req.params;
     try {
-        const result = await Product.findByIdAndupadte(id);
-        if (result) {
-            return res.status(200).json({ success: true, message: 'Product deleted successfully' });
-        } else {
-            return res.status(404).json({ success: false, error: 'Product not found' });
+        const productId = req.params.id;
+        const { title, description, price, image_url } = req.body;
+
+        // Construct the updateData object from the destructured fields
+        const updateData = { title, description, price, image_url };
+
+        const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
         }
-    } catch (err) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: err.message });
+
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
     }
 };

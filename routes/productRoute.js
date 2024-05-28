@@ -9,5 +9,6 @@ const { productValidationRules } = require('../validators/productValidator');
 router.post('/product',productmiddleware, productValidationRules(), productController.createProduct);
 router.get('/products',productmiddleware, productController.getProducts);
 router.delete('/product/:id', productmiddleware,productController.deleteProduct);
+router.put('/product/:id', productmiddleware,productController.updateProduct);
 module.exports = router;
 
