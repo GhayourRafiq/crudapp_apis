@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const productRoutes = require('./routes/productRoute');
 const userroutes = require('./routes/userRouts');
 const resetPassword = require('./routes/resetpasswordroute');
+const cartRoutes = require('./routes/cartRoutes');
 dotenv.config();
 
 const app = express();
@@ -31,6 +32,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use('/api', productRoutes);
 app.use('/api/auth', userroutes);
 app.use('/api/resetpassword', resetPassword);
+app.use('/api/cart', cartRoutes);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
