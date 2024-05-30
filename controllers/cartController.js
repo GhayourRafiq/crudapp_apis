@@ -39,6 +39,42 @@ const addToCart = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+const decreaseQuantity = async (req, res) => {
+    const { userId, productId, quantity } = req.body;
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        let cart = await Cart.findOne({ userId });
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart not found' });
+        }
+
+        const productIndex = cart.items.findIndex(item => item.productId.equals(productId));
+        if (productIndex > -1) {
+            // Product exists in the cart, decrease quantity
+            cart.items[productIndex].quantity -= quantity;
+            if (cart.items[productIndex].quantity <= 0) {
+                // Remove the item from the cart if quantity is zero or less
+                cart.items.splice(productIndex, 1);
+            } else {
+                // Update the total price if the item is still in the cart
+                cart.items[productIndex].totalPrice = cart.items[productIndex].quantity * product.price;
+            }
+        } else {
+            return res.status(404).json({ error: 'Product not found in cart' });
+        }
+
+        await cart.save();
+
+        res.status(200).json({ message: 'Product quantity decreased in cart', cart });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 const removeFromCart = async (req, res) => {
     const { userId, productId } = req.body;
@@ -73,4 +109,4 @@ const getUserCart = async (req, res) => {
     }
 };
 
-module.exports = { addToCart, removeFromCart, getUserCart };
+module.exports = { addToCart, removeFromCart, getUserCart , decreaseQuantity};
