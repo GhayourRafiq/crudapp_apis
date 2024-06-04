@@ -18,7 +18,7 @@ exports.signup = async (req, res) => {
     // Check if the user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ success: false, msg: 'User already exists' });
+      return res.status(400).json({ success: false, msg: 'User with email  already exists' });
     }
 
     // Hash the password
@@ -95,15 +95,12 @@ exports.deleteAdmin = async (req, res) => {
     const { id } = req.params;
 
     // Find the user by ID
-    const user = await User.findById(id);
+    const user = await User.findByIdAndDelete(id);
 
     // Check if the user is an admin
     if (!user) {
       return res.status(404).json({ success: false, msg: 'User not found' });
     }
-
-    // Delete the admin
-    await User.findByIdAndDelete(id);
     res.json({ success: true, msg: ' deleted Suceesfully' });
   } catch (err) {
     console.error(err.message);

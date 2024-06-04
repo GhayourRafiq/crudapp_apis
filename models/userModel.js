@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Define the User schema with necessary fields and data types
 const UserSchema = new mongoose.Schema({
-  firstName: String,
+  firstName:{type: String}, 
   lastName: String,
   email: {
     type: String,
